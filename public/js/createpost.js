@@ -463,8 +463,12 @@ function choiceForUser() {
 
 
 }
-window.onload = choiceForUser;
-window.onload = postItems;
+// window.onload = choiceForUser;
+// window.onload = postItems;
+window.onload=function(){
+      choiceForUser();
+      postItems();
+}
 function postItems(){
       var username = $(".username").text();
       //     alert(username);
