@@ -19,7 +19,7 @@
       </li>
       {{else}}
       <li class="nav-item">
-        <p>[ logged in as <strong><a class="username" href="/postItem">{{user.username}}</a></strong>]</p>
+        <p>[ logged in as <strong><a id="postItemId" value="{{user.username}}" class="username" href="/postItem">{{user.username}}</a></strong>]</p>
       </li>
       <li class="nav-item">
         <p>[ <a href="/logout">log out</a>]</p>
@@ -29,5 +29,7 @@
   </nav>
 
 </header>
+<div id="postItemContainer"></div>
+
 <p>This is user's posting item:use searchByUserName() and add js file to change this page</p>
 <script src="/js/createpost.js"></script>

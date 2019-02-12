@@ -7,7 +7,7 @@ var map;
 var iconI = 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png';
 var iconGreen = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';//pink-dot.png/yellow-dot.png/purple-dot.png
 var originPlace = "";
-var latDir,lngDir;
+var latDir, lngDir;
 // module.exports = function () {
 var API = {
       savePostInfo: function (post) {
@@ -115,6 +115,8 @@ var handleTypeFormSubmit = function (event) {
 };
 var handlePostInfoFormSubmit = function (event) {
       event.preventDefault();
+      var cityArea = $("#locationHeader").attr("value");
+      // alert("cityArea: "+cityArea);
       var typeOfPost = $("#typeHeader").attr("value");
       var category = $("#categoryHeader").attr("value");
       var title = $("#postTitle").val().trim();
@@ -153,9 +155,10 @@ var handlePostInfoFormSubmit = function (event) {
             contactName: contactNam,
             contactMedium: contactMedium,
             image: img,
-            userName: userName
+            userName: userName,
+            cityArea: cityArea
       };
-      alert("post: " + JSON.stringify(post));
+      // alert("post: " + JSON.stringify(post));
       if (!(post.title && post.street && post.city && post.state && post.postCode && post.phoneNum)) {
             alert("You must enter an necessory!");
             return;
@@ -163,7 +166,9 @@ var handlePostInfoFormSubmit = function (event) {
 
       API.savePostInfo(post).then(function () {
             // refreshExamples();
+
       });
+      alert("Success Submit");
       window.location.href = "/index";
       // alert("window.location.href = /index");
 };
@@ -180,7 +185,7 @@ var handleSearch = function (event) {
                   if (!dbPosts) {
                         return;
                   }
-                  mapMarkers.forEach(function(lastmarkers){
+                  mapMarkers.forEach(function (lastmarkers) {
                         lastmarkers.setMap(null);
                   });
                   // postInfoArray=dbPosts;
@@ -192,7 +197,9 @@ var handleSearch = function (event) {
                   searchMap(postInfoArray, geocoder);
 
             });
-      } else if (searchVal === 'zipcode') { }
+      } else if (searchVal === 'zipcode') {
+            $("#map").hide();
+      }
 
 }
 
@@ -322,41 +329,6 @@ function searchMap(postInfoArray, geocoder) {
             });
       });
 }
-// function geocodeAddress(geocoder, map) {
-//       // alert("addressArray: "+JSON.stringify(addressArray));
-//       postInfoArray.forEach(function (eachPostObj) {
-//             var address = eachPostObj.street + ", " + eachPostObj.city + ", " + eachPostObj.state + " " + eachPostObj.postCode
-//             geocoder.geocode({ 'address': address }, function (results, status) {
-//                   alert("results: " + JSON.stringify(results[0].geometry.location) + " status: " + status);
-//                   postInfoObj = {
-//                         id: eachPostObj.id,
-//                         lanlg: results[0].geometry.location,
-//                         price: eachPostObj.price,
-//                         condition: eachPostObj.price,
-//                         image: eachPostObj.image,
-//                         title: eachPostObj.title,
-//                         address: address,
-//                         phoneNum: eachPostObj.phoneNum
-//                   };
-//                   if (status === 'OK') {
-//                         // alert(JSON.stringify(postInfoObj));
-//                         addMarker(postInfoObj, map);
-//                         // resultsMap.setCenter(results[0].geometry.location);
-//                         // var marker = new google.maps.Marker({
-//                         //       map: resultsMap,
-//                         //       position: results[0].geometry.location,
-//                         //       draggable: true,
-//                         //       title: "Confirm your location!"
-//                         // });
-//                   } else {
-//                         alert('Geocode was not successful for the following reason: ' + status);
-//                   }
-//             });
-//       });
-//       //your location marker
-
-
-// }
 function addMarker(postInfoObj, resultsMap) {
       // alert("postInfoObj.lanlg: "+postInfoObj.lanlg);
       resultsMap.setCenter(postInfoObj.lanlg);
@@ -373,7 +345,7 @@ function addMarker(postInfoObj, resultsMap) {
           <div><strong>${postInfoObj.title}</strong></div>
           <div>Price: ${postInfoObj.price}</div>
           <div>Address: ${postInfoObj.address}</div>
-          <div>Phone Number: ${postInfoObj.eachPostObj}</div>
+          <div>Phone Number: ${postInfoObj.phoneNum}</div>
           <img class="businessImg" src="${postInfoObj.image}">
           <button class="directionBtn" value="${postInfoObj.address}" id="${postInfoObj.id}">direction</button>
           `
@@ -387,17 +359,18 @@ function addMarker(postInfoObj, resultsMap) {
       // mapMarkersIncludingLoc.push(marker);
 
 }
+//check the routs from origin to destination
 $(document).on("click", ".directionBtn", function () {
       if ($(this).val()) {
             // alert("lat: "+latDir+" ==lng: "+lngDir);
             localStorage.setItem("originPlc", originPlace);
             localStorage.setItem("destinationPlc", $(this).val());
-            localStorage.setItem("lat",latDir);
-            localStorage.setItem("lng",lngDir);
+            localStorage.setItem("lat", latDir);
+            localStorage.setItem("lng", lngDir);
             // window.location.href = "/directionMap";
             window.open("/directionMap");
       }
-      
+
       // alert($(this).val());
       // var directionPlace = $(this).val();
       // alert("originPlace: "+originPlace+"----directionPlace: "+directionPlace);
@@ -441,8 +414,9 @@ function choiceForUser() {
       }
 
       API.getPostsByUsername(username).then(function (dbposts) {
+            // alert(JSON.stringify(dbposts));
             var n = dbposts.length;
-            var selectedLocationVal = dbposts[n - 1].city;
+            var selectedLocationVal = dbposts[n - 1].cityArea;
             var selectedTypeVal = dbposts[n - 1].typeOfPost;
             var selectedCategoryVal = dbposts[n - 1].category;
             var contactNam = dbposts[n - 1].contactName;
@@ -456,6 +430,7 @@ function choiceForUser() {
 
             //login: The sys will auto selected the location in createpost page
             $("input[name='locationNam']").each(function () {
+                  //Eastside include the cities of Bellevue, Kirkland, Redmond, Sammamish, Issaquah, Newcastle, and Mercer Island
                   if ($(this).val() === selectedLocationVal) {
                         // alert(selectedVal);
                         $(this).prop("checked", true);;
@@ -489,7 +464,23 @@ function choiceForUser() {
 
 }
 window.onload = choiceForUser;
-// window.onload = initMap;
-// }
-// The API object contains methods for each kind of request we'll make
-
+window.onload = postItems;
+function postItems(){
+      var username = $(".username").text();
+      //     alert(username);
+      API.getPostsByUsername(username).then(function(postItemsdb){
+            // alert(JSON.stringify(postItemsdb));
+            // var postItemUl=$("<ul>");
+            var postItemStr="<ul>";
+            postItemsdb.forEach(function(postItem){
+                  // alert(JSON.stringify(postItem));
+                  // var postItemLi=$("<li>");
+                  postItemStr+=`<li>${postItem.title}</li>`;
+                  // postItemLi.text();
+                  // var $div = $("<div>", {id: "foo", "class": "a"});
+                  
+            });
+            postItemStr+="</ul>"
+            $("#postItemContainer").append(postItemStr);
+      });
+}

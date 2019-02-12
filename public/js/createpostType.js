@@ -28,7 +28,8 @@ if (storageAvailable('localStorage')) {
       if(localStorage.getItem("locationVal")){
             var locationVal = localStorage.getItem("locationVal").replace("\"", "").replace("\"", "");
             $("#locationHeader").prepend(locationVal);
-            $("#cityInput").attr("value", locationVal);
+            // $("#cityInput").attr("value", locationVal);
+            $("#locationHeader").attr("value", locationVal);
       }
       if(localStorage.getItem("locationVal")&&localStorage.getItem("radiocategoryValue")){
             radioTypeValue = localStorage.getItem("radioTypeValue").replace("\"", "").replace("\"", "");
