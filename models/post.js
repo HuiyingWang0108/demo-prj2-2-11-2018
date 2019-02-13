@@ -60,7 +60,9 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     image: {
-      type: DataTypes.BLOB("long")
+      // type: DataTypes.BLOB("long")
+      type: DataTypes.STRING,
+      allowNull: true
     },
     userName: {
       type: DataTypes.STRING,

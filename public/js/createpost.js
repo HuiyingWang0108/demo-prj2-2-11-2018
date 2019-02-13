@@ -60,6 +60,17 @@ var API = {
                   url: "/api/createMap",
                   data: JSON.stringify(addressArray)
             });
+      },
+      uploadImage: function () {
+            return $.ajax({
+                  type: "post",
+                  url: "/api/upload",
+                  enctype:"multipart/form-data"
+                  // data: JSON.stringify(file)
+            }).then(function(data){
+                  alert("api/load--"+JSON.stringify(data));
+                  console.log("api/load--"+JSON.stringify(data));
+            });
       }
 }
 var refreshLocation = function () {
@@ -115,6 +126,15 @@ var handleTypeFormSubmit = function (event) {
 };
 var handlePostInfoFormSubmit = function (event) {
       event.preventDefault();
+      /**------upload image------ */
+      // var file=$(".postImg").val();
+      // API.uploadImage();
+      // API.uploadImage().then(function(data){
+      //       console.log(data);
+      //       alert("image: "+JSON.stringify(data));
+           
+      // })
+      /**------------get input value----- */
       var cityArea = $("#locationHeader").attr("value");
       // alert("cityArea: "+cityArea);
       var typeOfPost = $("#typeHeader").attr("value");
@@ -123,7 +143,8 @@ var handlePostInfoFormSubmit = function (event) {
       // alert("title: "+title);
       var price = $("#postPrice").val().trim();
       var condition = $("option[name='conditionOpt']:selected").val();
-      var img = $(".postImg").val();
+      // var img = $(".postImg").val();
+      // var img=
       // alert("img: "+img);
       var userName = $(".username").text();
       // alert("userName: " + userName); if null 
@@ -166,10 +187,9 @@ var handlePostInfoFormSubmit = function (event) {
 
       API.savePostInfo(post).then(function () {
             // refreshExamples();
-
       });
-      alert("Success Submit");
-      window.location.href = "/index";
+      
+      // window.location.href = "/index";
       // alert("window.location.href = /index");
 };
 var handleSearch = function (event) {
@@ -245,7 +265,7 @@ function initMap() {
             // var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor);
             map = new google.maps.Map(document.getElementById('map'), {
                   center: { lat: lat, lng: lng },//lat: 47.619905, lng: -122.320868
-                  zoom: 14,
+                  zoom: 10,
                   mapTypeId: 'roadmap',
                   mapTypeControlOptions: {
                         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR, position: google.maps.ControlPosition.BOTTOM_CENTER
@@ -465,26 +485,26 @@ function choiceForUser() {
 }
 // window.onload = choiceForUser;
 // window.onload = postItems;
-window.onload=function(){
+window.onload = function () {
       choiceForUser();
       postItems();
 }
-function postItems(){
+function postItems() {
       var username = $(".username").text();
       //     alert(username);
-      API.getPostsByUsername(username).then(function(postItemsdb){
+      API.getPostsByUsername(username).then(function (postItemsdb) {
             // alert(JSON.stringify(postItemsdb));
             // var postItemUl=$("<ul>");
-            var postItemStr="<ul>";
-            postItemsdb.forEach(function(postItem){
+            var postItemStr = "<ul>";
+            postItemsdb.forEach(function (postItem) {
                   // alert(JSON.stringify(postItem));
                   // var postItemLi=$("<li>");
-                  postItemStr+=`<li>${postItem.title}</li>`;
+                  postItemStr += `<li>${postItem.title}</li>`;
                   // postItemLi.text();
                   // var $div = $("<div>", {id: "foo", "class": "a"});
-                  
+
             });
-            postItemStr+="</ul>"
+            postItemStr += "</ul>"
             $("#postItemContainer").append(postItemStr);
       });
 }

@@ -25,6 +25,9 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(bodyParser.json());
+//----------multer--------------
+
+//----------multer--------------
 
 // Handlebars
 app.engine(
@@ -52,6 +55,7 @@ require('./config/passport')(passport,db); // pass passport for configuration
 // require("./routes/htmlRoutes")(app);
 require("./routes/passportRoutes")(app,passport);//login-signup
 require("./routes/post-api-routes")(app);//
+require("./routes/imageRoutes")(app);//
 
 var syncOptions = { force: false };
 
