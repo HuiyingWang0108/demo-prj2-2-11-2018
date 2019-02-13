@@ -1,4 +1,5 @@
 // var postInfoArray = [];
+var post = {};
 var postInfoObj = {};
 var mapMarkers = [];
 // var mapMarkersIncludingLoc = [];
@@ -64,12 +65,12 @@ var API = {
       uploadImage: function () {
             return $.ajax({
                   type: "post",
-                  url: "/api/upload",
-                  enctype:"multipart/form-data"
+                  url: "/api/upload"
+                  // enctype: "multipart/form-data"
                   // data: JSON.stringify(file)
-            }).then(function(data){
-                  alert("api/load--"+JSON.stringify(data));
-                  console.log("api/load--"+JSON.stringify(data));
+            }).then(function (data) {
+                  alert("img/load--" + JSON.stringify(data));
+                  console.log("img/load--" + JSON.stringify(data));
             });
       }
 }
@@ -125,14 +126,16 @@ var handleTypeFormSubmit = function (event) {
       window.location.href = "/createpostInfo";
 };
 var handlePostInfoFormSubmit = function (event) {
+
       event.preventDefault();
+      // alert("handlePostInfoFormSubmit");
       /**------upload image------ */
       // var file=$(".postImg").val();
       // API.uploadImage();
       // API.uploadImage().then(function(data){
       //       console.log(data);
       //       alert("image: "+JSON.stringify(data));
-           
+
       // })
       /**------------get input value----- */
       var cityArea = $("#locationHeader").attr("value");
@@ -175,7 +178,7 @@ var handlePostInfoFormSubmit = function (event) {
             phoneNum: phoneNum,
             contactName: contactNam,
             contactMedium: contactMedium,
-            image: img,
+            // image: img,
             userName: userName,
             cityArea: cityArea
       };
@@ -184,12 +187,18 @@ var handlePostInfoFormSubmit = function (event) {
             alert("You must enter an necessory!");
             return;
       }
+      try {
+            localStorage.setItem("postObj", JSON.stringify(post));
+      } catch (error) {
+            console.log(error);
+      }
 
-      API.savePostInfo(post).then(function () {
-            // refreshExamples();
-      });
-      
+      // API.savePostInfo(post).then(function () {
+      //       // refreshExamples();
+      // });
+
       // window.location.href = "/index";
+      window.location.href = "/upload";
       // alert("window.location.href = /index");
 };
 var handleSearch = function (event) {
@@ -222,11 +231,21 @@ var handleSearch = function (event) {
       }
 
 }
-
+var handleSubmit = function () {
+      var post = JSON.parse(localStorage.getItem("postObj"));
+      //      alert("post+++"+post);
+      if ($("#uploadImg").attr("src")) {
+            post.image = $("#uploadImg").attr("src");
+            // alert("post.image::" + post.image);
+      }
+      API.savePostInfo(post);
+      window.location.href = "/index";
+}
 $(document).on("click", ".locationBtn", handleLocationFormSubmit);
 $(document).on("click", ".typeBtn", handleTypeFormSubmit);
-$(document).on("click", "#submitPost", handlePostInfoFormSubmit);
+$(document).on("click", ".postInfoBtn", handlePostInfoFormSubmit);
 $(document).on("click", ".searchBtn", handleSearch);
+$(document).on("click", "#submitBtn", handleSubmit);
 /**
  * * init Google map
 */

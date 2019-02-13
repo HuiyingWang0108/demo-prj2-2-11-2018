@@ -66,6 +66,11 @@ if (storageAvailable('localStorage')) {
 
 
       // $("#locationHeader").html(locationVal+" >");
+      // //handle createpostInfo page
+      // if(localStorage.getItem("postObj")){
+      //       alert("localstoragy::postObj");
+      //       alert(localStorage.getItem("postObj"));
+      // };
 }
 else {
       // Too bad, no localStorage for us

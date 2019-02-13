@@ -41,7 +41,7 @@
 <div class="container">
       <div class="col-sm-12 col-sm-offset-3">
             <section class="body">
-                  <form id="postingForm" action="/api/upload" method="post" enctype="multipart/form-data">
+                  <form id="postingForm" action="upload">
                         {{!-- api/createpostInfo --}}
                         <div class="new-form" id="new-edit">
                               <link type="text/css" rel="stylesheet" media="all" href="//www.craigslist.org/styles/JSONForm.css?v=6bb7678de82b3f8bed79728cb8732c0a">
@@ -79,35 +79,6 @@
                                                                   <option name="conditionOpt" value="old">old</option>
                                                             </select>
                                                       </div>
-                                                </div>
-                                                <div class="col-md-4 mb-4">
-                                                      {{!-- <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                                                      </div> --}}
-                                                      {{!-- <div class="form-group">
-                                                            <label for="exampleFormControlFile1">image</label>
-                                                            <input type="file" class="form-control-file postImg" name="myImage"
-                                                                  accept=".jpg, .jpeg, .png">
-                                                      </div> --}}
-                                                      {{!-- <form action="/upload" method="post" enctype="multipart/form-data"> --}}
-                                                            <input type="file" class="form-control-file postImg" name="myImage">
-                                                            {{!-- <button type="submit" class="imgBtn">Upload</button> --}}
-                                                      {{!-- </form> --}}
-                                                      {{!-- {{#if (typeof msg)!="undefined"}}
-                                                      <p>{{msg}}</p>
-                                                      {{else}}
-                                                      <p>{{"undefined!!!"}}</p>
-                                                      {{/if}}
-                                                      {{#if (typeof file)!="undefined"}}
-                                                      <img src={{file}}>
-                                                      {{else}}
-                                                      <img></img> --}}
-                                                      {{!-- <div class="custom-file">
-                                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                                                  aria-describedby="inputGroupFileAddon01">
-                                                            <label class="custom-file-label" for="inputGroupFile01">Choose
-                                                                  file</label>
-                                                      </div> --}}
                                                 </div>
                                           </div>
                                     </fieldset>
@@ -187,14 +158,12 @@
                                                 </div>
                                           </div>
                                     </fieldset>
-                                    <div class="json-form-group json-form-group-container submit-buttons">
-                                          <div class="submit_button">
-                                                <button id="submitPost" type="submit" name="go" value="continue" class="postInfoBtn go big-button submit-button"
-                                                      tabindex="1">submit</button>
-                                          </div>
-                                    </div>
+
+
                               </div>
                         </div>
+                        <button class="postInfoBtn" type="submit" name="go" value="Continue">continue</button>
+
                   </form>
             </section>
       </div>

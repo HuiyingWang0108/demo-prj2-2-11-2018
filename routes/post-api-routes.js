@@ -13,7 +13,8 @@ module.exports = function (app) {
     console.log("req.body:?? ", req.body);
     db.Post.create(req.body).then(function (err, dbPost) {
       if (err) throw err;
-      res.json(dbPost);
+      // res.json(dbPost);
+      res.send("Success Submit");
     });
   });
   // Search By like %title %
