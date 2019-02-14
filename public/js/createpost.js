@@ -212,6 +212,7 @@ var handleSearch = function (event) {
             API.getPostsByUseditem(searchInput).then(function (dbPosts) {
                   // alert("getPostsByUseditem" + JSON.stringify(dbPosts));
                   if (!dbPosts) {
+                        alert("No related Baby Used Item");
                         return;
                   }
                   mapMarkers.forEach(function (lastmarkers) {
@@ -380,7 +381,7 @@ function addMarker(postInfoObj, resultsMap) {
       });
 
       var infoWindow = new google.maps.InfoWindow({
-            maxWidth: 180,
+            maxWidth: 280,
             // backgroundColor: 'rgb(165,42,42)',
             content: `
           <div><strong>${postInfoObj.title}</strong></div>
