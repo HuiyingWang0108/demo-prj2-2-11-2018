@@ -1,120 +1,95 @@
-//geolocationPage
-var x = document.getElementById("geoLocation");
-function getLocation() {
-      if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
+$(document).ready(function() {
+      // Getting references to the name input and author container, as well as the table body
+      var nameInput = $("#author-name");
+      var authorList = $("tbody");
+      var authorContainer = $(".author-container");
+      // Adding event listeners to the form to create a new object, and the button to delete
+      // an Author
+      $(document).on("submit", "#author-form", handleAuthorFormSubmit);
+      $(document).on("click", ".delete-author", handleDeleteButtonPress);
+    
+      // Getting the initial list of Authors
+      getAuthors();
+    
+      // A function to handle what happens when the form is submitted to create a new Author
+      function handleAuthorFormSubmit(event) {
+        event.preventDefault();
+        // Don't do anything if the name fields hasn't been filled out
+        if (!nameInput.val().trim().trim()) {
+          return;
+        }
+        // Calling the upsertAuthor function and passing in the value of the name input
+        upsertAuthor({
+          name: nameInput
+            .val()
+            .trim()
+        });
       }
-}
-function showPosition(position) {
-      x.innerHTML = "Latitude: " + position.coords.latitude +
-            "<br>Longitude: " + position.coords.longitude;
-}
-
-$(document).on('click', '#getGeolocation', function () {
-      console.log("clicked");
-      getLocation();
-});
-
-//map page
-var y = document.getElementById("map-canvas");
-var mapLatitude;
-var mapLongitude;
-var myLatlng;
-
-function getMapLocation() {
-      console.log("getMapLocation");
-      if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showMapPosition);
-      } else {
-            y.innerHTML = "Geolocation is not supported by this browser.";
+    
+      // A function for creating an author. Calls getAuthors upon completion
+      function upsertAuthor(authorData) {
+        $.post("/api/authors", authorData)
+          .then(getAuthors);
       }
-}
-function showMapPosition(position) {
-      console.log("showMapPosition");
-      mapLatitude = position.coords.latitude;
-      mapLongitude = position.coords.longitude;
-      myLatlng = new google.maps.LatLng(mapLatitude, mapLongitude);
-      getMap();
-}
-
-
-var map;
-function getMap() {
-      console.log("getMap");
-      var mapOptions = {
-            zoom: 12,
-            center: new google.maps.LatLng(mapLatitude, mapLongitude)
-      };
-      map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
-
-      var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-            title: "You are here!"
-      });
-}
-
-$(document).on("pageshow", "#mapPage", function (event) {
-      getMapLocation();
-});
-
-//directionsPage
-var directionsDisplay;
-var directionsService = new google.maps.DirectionsService();
-var directionsMap;
-var z = document.getElementById("directions-canvas");
-var start;
-var end;
-
-function getDirectionsLocation() {
-      console.log("getDirectionsLocation");
-      if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showDirectionsPosition);
-      } else {
-            z.innerHTML = "Geolocation is not supported by this browser.";
+    
+      // Function for creating a new list row for authors
+      function createAuthorRow(authorData) {
+        var newTr = $("<tr>");
+        newTr.data("author", authorData);
+        newTr.append("<td>" + authorData.name + "</td>");
+        if (authorData.Posts) {
+          newTr.append("<td> " + authorData.Posts.length + "</td>");
+        } else {
+          newTr.append("<td>0</td>");
+        }
+        newTr.append("<td><a href='/blog?author_id=" + authorData.id + "'>Go to Posts</a></td>");
+        newTr.append("<td><a href='/cms?author_id=" + authorData.id + "'>Create a Post</a></td>");
+        newTr.append("<td><a style='cursor:pointer;color:red' class='delete-author'>Delete Author</a></td>");
+        return newTr;
       }
-}
-function showDirectionsPosition(position) {
-      console.log("showDirectionsPosition");
-      directionsLatitude = position.coords.latitude;
-      directionsLongitude = position.coords.longitude;
-      directionsLatLng = new google.maps.LatLng(directionsLatitude, directionsLongitude);
-      getDirections();
-}
-
-function getDirections() {
-      console.log('getDirections');
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      //start = new google.maps.LatLng(directionsLatLng);
-      var directionsOptions = {
-            zoom: 12,
-            center: start
+    
+      // Function for retrieving authors and getting them ready to be rendered to the page
+      function getAuthors() {
+        $.get("/api/authors", function(data) {
+          var rowsToAdd = [];
+          for (var i = 0; i < data.length; i++) {
+            rowsToAdd.push(createAuthorRow(data[i]));
+          }
+          renderAuthorList(rowsToAdd);
+          nameInput.val("");
+        });
       }
-      directionsMap = new google.maps.Map(document.getElementById("directions-canvas"), directionsOptions);
-      directionsDisplay.setMap(directionsMap);
-      calcRoute();
-}
-
-function calcRoute() {
-      console.log("calcRoute");
-      start = directionsLatLng;
-      end = "50 Rue Ste-Catherine O Montréal, QC H2X 1Z6";
-      var request = {
-            origin: start,
-            destination: end,
-            travelMode: google.maps.TravelMode.TRANSIT
-      };
-      directionsService.route(request, function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                  directionsDisplay.setDirections(result);
-            }
-      });
-}
-
-$(document).on("pageshow", "#directionsPage", function (event) {
-      getDirectionsLocation();
-});
-
+    
+      // A function for rendering the list of authors to the page
+      function renderAuthorList(rows) {
+        authorList.children().not(":last").remove();
+        authorContainer.children(".alert").remove();
+        if (rows.length) {
+          console.log(rows);
+          authorList.prepend(rows);
+        }
+        else {
+          renderEmpty();
+        }
+      }
+    
+      // Function for handling what to render when there are no authors
+      function renderEmpty() {
+        var alertDiv = $("<div>");
+        alertDiv.addClass("alert alert-danger");
+        alertDiv.text("You must create an Author before you can create a Post.");
+        authorContainer.append(alertDiv);
+      }
+    
+      // Function for handling what happens when the delete button is pressed
+      function handleDeleteButtonPress() {
+        var listItemData = $(this).parent("td").parent("tr").data("author");
+        var id = listItemData.id;
+        $.ajax({
+          method: "DELETE",
+          url: "/api/authors/" + id
+        })
+          .then(getAuthors);
+      }
+    });
+    
