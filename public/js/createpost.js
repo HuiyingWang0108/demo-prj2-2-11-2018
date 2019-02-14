@@ -560,7 +560,7 @@ function postItems() {
                   +' class="collapse"> <div class="card-body">'
                   +postItemStr
                   +'</div></div></div>';
-                  alert(content);
+                  // alert(content);
                   $("#postItemsContainer").append(content);
             });
             // postItemStr += "</ol>"
