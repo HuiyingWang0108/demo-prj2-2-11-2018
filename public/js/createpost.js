@@ -244,11 +244,19 @@ var handleSubmit = function () {
       window.location.href = "/index";
       // alert("window.location.href =index");
 }
+var handleDeletePostItem=function(){
+      var id=$(this).val();
+      // alert("delete ok and id is "+id);
+      API.deleteById(id);
+      //refresh the postItem page
+      location.reload();
+}
 $(document).on("click", ".locationBtn", handleLocationFormSubmit);
 $(document).on("click", ".typeBtn", handleTypeFormSubmit);
 $(document).on("click", ".postInfoBtn", handlePostInfoFormSubmit);
 $(document).on("click", ".searchBtn", handleSearch);
 $(document).on("click", "#submitBtn", handleSubmit);
+$(document).on("click", "#deletePostItem", handleDeletePostItem);
 /**
  * * init Google map
 */
@@ -542,11 +550,12 @@ function postItems() {
                   postItemStr += `<li>${postItem.contactMedium}</li>`;
                   postItemStr += `<li>${postItem.languageOfPost}</li>`;
                   postItemStr += "</ul>"
+                  var btnId=postItem.id;
                   var bodyId="body"+postItem.id;
                   var dataTarget="#body"+postItem.id;
-                  var content='<div class="card"><div class="card-header"><button class="btn btn-link" type="button" data-toggle="collapse" data-target="'+dataTarget+'"'
+                  var content='<div class="card"><div class="card-header"><button  class="btn btn-link" type="button" data-toggle="collapse" data-target="'+dataTarget+'"'
                   +' aria-expanded="fase" aria-controls="'+bodyId+'"'
-                  +'> <strong>title:</strong> '+postItem.title+' <strong>price:</strong> '+postItem.price+' <strong>condition:</strong> '+postItem.condition+' </button></div> <div '
+                  +'> <strong>title:</strong> '+postItem.title+' <strong>price:</strong> '+postItem.price+' <strong>condition:</strong> '+postItem.condition+'<button id="deletePostItem" value='+btnId+' type="button" class="btn btn-danger">delete</button>'+' </button></div> <div '
                   +'id="'+bodyId+'"'
                   +' class="collapse"> <div class="card-body">'
                   +postItemStr
