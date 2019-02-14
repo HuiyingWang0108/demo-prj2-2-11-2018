@@ -239,7 +239,9 @@ var handleSubmit = function () {
             // alert("post.image::" + post.image);
       }
       API.savePostInfo(post);
+
       window.location.href = "/index";
+      // alert("window.location.href =index");
 }
 $(document).on("click", ".locationBtn", handleLocationFormSubmit);
 $(document).on("click", ".typeBtn", handleTypeFormSubmit);
@@ -510,27 +512,15 @@ window.onload = function () {
 }
 function postItems() {
       var username = $(".username").text();
+      //not login
+      if (!username) {
+            return;
+      }
       //     alert(username);
       API.getPostsByUsername(username).then(function (postItemsdb) {
             // alert(JSON.stringify(postItemsdb));
-       
             // var postItemStr = "<ol>";
             postItemsdb.forEach(function (postItem) {
-                  // alert("postItemsdb");
-                  // var i=0;
-                  // i++;
-                  // var postStr = "<div class='card'> <div class='card-header'> <h5 class='mb-0'>" +
-                  //       "<button class='btn btn-link' data-toggle='collapse'  aria-expanded='true' aria-controls='collapseOne'><p class='postShow'></p>"
-                  //       + "</button></h5></div> ";
-                  // $(".card-header").attr("id", postItem.id);
-                  // $(".btn").attr("data-target", "#"+i);
-                  // postStr+="<div class='collapse show' aria-labelledby='headingOne' data-parent='#accordion'>"
-                  // +"<div class='card-body'>"
-                  // $(".show").attr("id",i);
-                  // $(".postShow").text(postItem.title+" "+postItem.price);
-                  // postStr+=" </div></div></div>";
-                  // alert("postStr: "+postStr);
-                  // $("#postItemContainer").append(postStr);
                   //--------------------------
                   var  postItemStr = "<ul>"
                   // alert(JSON.stringify(postItem));
@@ -555,7 +545,7 @@ function postItems() {
                   var dataTarget="#body"+postItem.id;
                   var content='<div class="card"><div class="card-header"><button class="btn btn-link" type="button" data-toggle="collapse" data-target="'+dataTarget+'"'
                   +' aria-expanded="fase" aria-controls="'+bodyId+'"'
-                  +'> title: '+postItem.title+' price: '+postItem.price+' condition: '+postItem.condition+' </button></div> <div '
+                  +'> <strong>title:</strong> '+postItem.title+' <strong>price:</strong> '+postItem.price+' <strong>condition:</strong> '+postItem.condition+' </button></div> <div '
                   +'id="'+bodyId+'"'
                   +' class="collapse"> <div class="card-body">'
                   +postItemStr
