@@ -513,17 +513,58 @@ function postItems() {
       //     alert(username);
       API.getPostsByUsername(username).then(function (postItemsdb) {
             // alert(JSON.stringify(postItemsdb));
-            // var postItemUl=$("<ul>");
-            var postItemStr = "<ul>";
+       
+            // var postItemStr = "<ol>";
             postItemsdb.forEach(function (postItem) {
+                  // alert("postItemsdb");
+                  // var i=0;
+                  // i++;
+                  // var postStr = "<div class='card'> <div class='card-header'> <h5 class='mb-0'>" +
+                  //       "<button class='btn btn-link' data-toggle='collapse'  aria-expanded='true' aria-controls='collapseOne'><p class='postShow'></p>"
+                  //       + "</button></h5></div> ";
+                  // $(".card-header").attr("id", postItem.id);
+                  // $(".btn").attr("data-target", "#"+i);
+                  // postStr+="<div class='collapse show' aria-labelledby='headingOne' data-parent='#accordion'>"
+                  // +"<div class='card-body'>"
+                  // $(".show").attr("id",i);
+                  // $(".postShow").text(postItem.title+" "+postItem.price);
+                  // postStr+=" </div></div></div>";
+                  // alert("postStr: "+postStr);
+                  // $("#postItemContainer").append(postStr);
+                  //--------------------------
+                  var  postItemStr = "<ul>"
                   // alert(JSON.stringify(postItem));
                   // var postItemLi=$("<li>");
                   postItemStr += `<li>${postItem.title}</li>`;
-                  // postItemLi.text();
-                  // var $div = $("<div>", {id: "foo", "class": "a"});
-
+                  postItemStr += `<li>${postItem.price}</li>`;
+                  postItemStr += `<li>${postItem.condition}</li>`;
+                  postItemStr += `<li>${postItem.typeOfPost}</li>`;
+                  postItemStr += `<li>${postItem.category}</li>`;
+                  postItemStr += `<img src=${postItem.image}>`;
+                  postItemStr += `<li>${postItem.street}</li>`;
+                  postItemStr += `<li>${postItem.city}</li>`;
+                  postItemStr += `<li>${postItem.state}</li>`;
+                  postItemStr += `<li>${postItem.postCode}</li>`;
+                  postItemStr += `<li>${postItem.contactName}</li>`;
+                  postItemStr += `<li>${postItem.phoneNum}</li>`;
+                  postItemStr += `<li>${postItem.email}</li>`;
+                  postItemStr += `<li>${postItem.contactMedium}</li>`;
+                  postItemStr += `<li>${postItem.languageOfPost}</li>`;
+                  postItemStr += "</ul>"
+                  var bodyId="body"+postItem.id;
+                  var dataTarget="#body"+postItem.id;
+                  var content='<div class="card"><div class="card-header"><button class="btn btn-link" type="button" data-toggle="collapse" data-target="'+dataTarget+'"'
+                  +' aria-expanded="fase" aria-controls="'+bodyId+'"'
+                  +'> title: '+postItem.title+' price: '+postItem.price+' condition: '+postItem.condition+' </button></div> <div '
+                  +'id="'+bodyId+'"'
+                  +' class="collapse"> <div class="card-body">'
+                  +postItemStr
+                  +'</div></div></div>';
+                  alert(content);
+                  $("#postItemsContainer").append(content);
             });
-            postItemStr += "</ul>"
-            $("#postItemContainer").append(postItemStr);
+            // postItemStr += "</ol>"
+            // $("#postItemContainer").append(postItemStr);
+           
       });
 }
