@@ -2,7 +2,7 @@ var db = require("../models");
 
 module.exports = function (app) {
   // Get all posts
-  app.get("/api/createpostInfo", function (req, res) {
+  app.get("/api/allPosts", function (req, res) {
     db.Post.findAll({}).then(function (dbPosts) {
       res.json(dbPosts);
     });

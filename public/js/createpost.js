@@ -11,6 +11,12 @@ var originPlace = "";
 var latDir, lngDir;
 // module.exports = function () {
 var API = {
+      getPosts: function () {
+            return $.ajax({
+                  url: "/api/allPosts",
+                  type: "get"
+            });
+      },
       savePostInfo: function (post) {
             return $.ajax({
                   headers: {
@@ -209,12 +215,14 @@ var handleSearch = function (event) {
       var searchInput = $("#searchInput").val().trim();
       // alert(searchVal);
       if (searchVal === 'title') {
+
             API.getPostsByUseditem(searchInput).then(function (dbPosts) {
                   // alert("getPostsByUseditem" + JSON.stringify(dbPosts));
                   if (!dbPosts) {
                         alert("No related Baby Used Item");
                         return;
                   }
+                  // $("#allPostsCol").hide();??
                   mapMarkers.forEach(function (lastmarkers) {
                         lastmarkers.setMap(null);
                   });
@@ -228,7 +236,15 @@ var handleSearch = function (event) {
 
             });
       } else if (searchVal === 'zipcode') {
-            $("#map").hide();
+            $("#allpostContainer").hide()
+            // $("#map").hide();
+            API.getPostsByZipcode(searchInput).then(function (dbPosts) {
+                  if (!dbPosts) {
+                        alert("No related goods in this zipcode: " + searchInput);
+                        return;
+                  }
+                  postItemsByZipcodeShow(dbPosts);
+            });
       }
 
 }
@@ -244,8 +260,8 @@ var handleSubmit = function () {
       window.location.href = "/index";
       // alert("window.location.href =index");
 }
-var handleDeletePostItem=function(){
-      var id=$(this).val();
+var handleDeletePostItem = function () {
+      var id = $(this).val();
       // alert("delete ok and id is "+id);
       API.deleteById(id);
       //refresh the postItem page
@@ -257,6 +273,13 @@ $(document).on("click", ".postInfoBtn", handlePostInfoFormSubmit);
 $(document).on("click", ".searchBtn", handleSearch);
 $(document).on("click", "#submitBtn", handleSubmit);
 $(document).on("click", "#deletePostItem", handleDeletePostItem);
+// $(document).on("change", "#inputGroupSelect01",handleChangeSelect );
+// var handleChangeSelect=function(){
+//       //refresh index page
+//       location.reload();
+// allPostsShow();
+// }
+// $(document).on("click", ".allPostBtn", locatedPostItem);//all list for each post click 
 /**
  * * init Google map
 */
@@ -312,6 +335,7 @@ function initMap() {
                   // animation: google.maps.Animation.DROP,
                   // title: "Confirm your location!"
             });
+            var dragInfoWindow;
             // mapMarkersIncludingLoc.push(marker);
             //pass the event.latLng trough the Geocoder to get the address
             google.maps.event.addListener(marker, 'dragend', function (event) {
@@ -322,14 +346,14 @@ function initMap() {
                               if (results[0]) {
                                     originPlace = results[0].formatted_address;
                                     // alert(results[0].formatted_address);
-                                    var infoWindow = new google.maps.InfoWindow({
+                                    dragInfoWindow = new google.maps.InfoWindow({
                                           maxWidth: 180,
                                           content: `
                                         <div><strong>${results[0].formatted_address}</strong></div>
                                         `
                                     });
                                     marker.addListener('mouseover', function () {
-                                          infoWindow.open(map, marker);// how to close last infoWindow when drage again???
+                                          dragInfoWindow.open(map, marker);// how to close last infoWindow when drage again???====Just make sure you only create ONE infoWindow in the global scope
                                     });
 
                               }
@@ -516,9 +540,22 @@ function choiceForUser() {
 // window.onload = choiceForUser;
 // window.onload = postItems;
 window.onload = function () {
-      choiceForUser();
-      postItems();
+      if (window.location.href.match("createpostInfo") != null) {
+            // alert("createpostInfo");
+            choiceForUser();//createpostInfo page
+      } else if (window.location.href.match("postItem") != null) {
+            // alert("postItem");
+            postItems();//postItems page
+      } else if (window.location.href.match("index") != null) {
+            allPostsShow();
+      }
+
+
+
 }
+// alert("window.location.href: " + window.location.href.match("index") != null);
+// if (window.location.href.match('car-driving.html') != null) {
+// }
 function postItems() {
       var username = $(".username").text();
       //not login
@@ -529,42 +566,132 @@ function postItems() {
       API.getPostsByUsername(username).then(function (postItemsdb) {
             // alert(JSON.stringify(postItemsdb));
             // var postItemStr = "<ol>";
-            postItemsdb.forEach(function (postItem) {
-                  //--------------------------
-                  var  postItemStr = "<ul>"
-                  // alert(JSON.stringify(postItem));
-                  // var postItemLi=$("<li>");
-                  postItemStr += `<li>${postItem.title}</li>`;
-                  postItemStr += `<li>${postItem.price}</li>`;
-                  postItemStr += `<li>${postItem.condition}</li>`;
-                  postItemStr += `<li>${postItem.typeOfPost}</li>`;
-                  postItemStr += `<li>${postItem.category}</li>`;
-                  postItemStr += `<img src=${postItem.image}>`;
-                  postItemStr += `<li>${postItem.street}</li>`;
-                  postItemStr += `<li>${postItem.city}</li>`;
-                  postItemStr += `<li>${postItem.state}</li>`;
-                  postItemStr += `<li>${postItem.postCode}</li>`;
-                  postItemStr += `<li>${postItem.contactName}</li>`;
-                  postItemStr += `<li>${postItem.phoneNum}</li>`;
-                  postItemStr += `<li>${postItem.email}</li>`;
-                  postItemStr += `<li>${postItem.contactMedium}</li>`;
-                  postItemStr += `<li>${postItem.languageOfPost}</li>`;
-                  postItemStr += "</ul>"
-                  var btnId=postItem.id;
-                  var bodyId="body"+postItem.id;
-                  var dataTarget="#body"+postItem.id;
-                  var content='<div class="card"><div class="card-header"><button  class="btn btn-link" type="button" data-toggle="collapse" data-target="'+dataTarget+'"'
-                  +' aria-expanded="fase" aria-controls="'+bodyId+'"'
-                  +'> <strong>title:</strong> '+postItem.title+' <strong>price:</strong> '+postItem.price+' <strong>condition:</strong> '+postItem.condition+'<button id="deletePostItem" value='+btnId+' type="button" class="btn btn-danger">delete</button>'+' </button></div> <div '
-                  +'id="'+bodyId+'"'
-                  +' class="collapse"> <div class="card-body">'
-                  +postItemStr
-                  +'</div></div></div>';
-                  // alert(content);
-                  $("#postItemsContainer").append(content);
-            });
-            // postItemStr += "</ol>"
-            // $("#postItemContainer").append(postItemStr);
-           
+            postItemsShow(postItemsdb);
+
       });
 }
+var postItemsShow = function (postItemsdb) {
+      postItemsdb.forEach(function (postItem) {
+            //--------------------------
+            var postItemStr = "<ul>"
+            // alert(JSON.stringify(postItem));
+            // var postItemLi=$("<li>");
+            postItemStr += `<li>${postItem.title}</li>`;
+            postItemStr += `<li>${postItem.price}</li>`;
+            postItemStr += `<li>${postItem.condition}</li>`;
+            postItemStr += `<li>${postItem.typeOfPost}</li>`;
+            postItemStr += `<li>${postItem.category}</li>`;
+            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
+            postItemStr += `<li>${postItem.street}</li>`;
+            postItemStr += `<li>${postItem.city}</li>`;
+            postItemStr += `<li>${postItem.state}</li>`;
+            postItemStr += `<li>${postItem.postCode}</li>`;
+            postItemStr += `<li>${postItem.contactName}</li>`;
+            postItemStr += `<li>${postItem.phoneNum}</li>`;
+            postItemStr += `<li>${postItem.email}</li>`;
+            postItemStr += `<li>${postItem.contactMedium}</li>`;
+            postItemStr += `<li>${postItem.languageOfPost}</li>`;
+            postItemStr += "</ul>"
+            var btnId = postItem.id;
+            var bodyId = "body" + postItem.id;
+            var dataTarget = "#body" + postItem.id;
+            var content = '<div class="card"><div class="card-header"><button  class="btn btn-link" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
+                  + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
+                  + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + '<button id="deletePostItem" value=' + btnId + ' type="button" class="btn btn-danger">delete</button>' + ' </button></div> <div '
+                  + 'id="' + bodyId + '"'
+                  + ' class="collapse"> <div class="card-body">'
+                  + postItemStr
+                  + '</div></div></div>';
+            // alert(content);
+            $("#postItemsContainer").append(content);
+      });
+      // postItemStr += "</ol>"
+      // $("#postItemContainer").append(postItemStr);
+}
+var postItemsByZipcodeShow = function (postItemsdb) {
+      postItemsdb.forEach(function (postItem) {
+            //--------------------------
+            var postItemStr = "<ul>"
+            // alert(JSON.stringify(postItem));
+            // var postItemLi=$("<li>");
+            postItemStr += `<li>${postItem.title}</li>`;
+            postItemStr += `<li>${postItem.price}</li>`;
+            postItemStr += `<li>${postItem.condition}</li>`;
+            postItemStr += `<li>${postItem.typeOfPost}</li>`;
+            postItemStr += `<li>${postItem.category}</li>`;
+            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
+            postItemStr += `<li>${postItem.street}</li>`;
+            postItemStr += `<li>${postItem.city}</li>`;
+            postItemStr += `<li>${postItem.state}</li>`;
+            postItemStr += `<li>${postItem.postCode}</li>`;
+            postItemStr += `<li>${postItem.contactName}</li>`;
+            postItemStr += `<li>${postItem.phoneNum}</li>`;
+            postItemStr += `<li>${postItem.email}</li>`;
+            postItemStr += `<li>${postItem.contactMedium}</li>`;
+            postItemStr += `<li>${postItem.languageOfPost}</li>`;
+            postItemStr += "</ul>"
+            var btnId = postItem.id;
+            var bodyId = "body" + postItem.id;
+            var dataTarget = "#body" + postItem.id;
+            var content = '<div class="card"><div class="card-header"><button  class="btn btn-link" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
+                  + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
+                  + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
+                  + 'id="' + bodyId + '"'
+                  + ' class="collapse"> <div class="card-body">'
+                  + postItemStr
+                  + '</div></div></div>';
+            // alert(content);
+            $("#searchByZipcode").append(content);
+      });
+      // postItemStr += "</ol>"
+      // $("#postItemContainer").append(postItemStr);
+}
+var allPostsListShow = function (postItemsdb) {
+      // alert("allPostsListShow");
+      postItemsdb.forEach(function (postItem) {
+            //--------------------------
+            var postItemStr = "<ul>"
+            // alert(JSON.stringify(postItem));
+            // var postItemLi=$("<li>");
+            postItemStr += `<li>${postItem.title}</li>`;
+            postItemStr += `<li>${postItem.price}</li>`;
+            postItemStr += `<li>${postItem.condition}</li>`;
+            postItemStr += `<li>${postItem.typeOfPost}</li>`;
+            postItemStr += `<li>${postItem.category}</li>`;
+            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
+            postItemStr += `<li>${postItem.street}</li>`;
+            postItemStr += `<li>${postItem.city}</li>`;
+            postItemStr += `<li>${postItem.state}</li>`;
+            postItemStr += `<li>${postItem.postCode}</li>`;
+            postItemStr += `<li>${postItem.contactName}</li>`;
+            postItemStr += `<li>${postItem.phoneNum}</li>`;
+            postItemStr += `<li>${postItem.email}</li>`;
+            postItemStr += `<li>${postItem.contactMedium}</li>`;
+            postItemStr += `<li>${postItem.languageOfPost}</li>`;
+            postItemStr += "</ul>"
+            var addressForBtn = postItem.street + ' ' + postItem.city + ' ' + postItem.state + ' ' + postItem.postCode;
+            var btnId = postItem.id;
+            var bodyId = "body" + postItem.id;
+            var dataTarget = "#body" + postItem.id;
+            var content = '<div class="card"><div class="card-header"><button value=' + addressForBtn + ' class="btn btn-link allPostBtn" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
+                  + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
+                  + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
+                  + 'id="' + bodyId + '"'
+                  + ' class="collapse"> <div class="card-body">'
+                  + postItemStr
+                  + '</div></div></div>';
+            // alert(content);
+            $("#allPosts").append(content);
+      });
+      // postItemStr += "</ol>"
+      // $("#postItemContainer").append(postItemStr);
+}
+function allPostsShow() {
+      API.getPosts().then(function (allPosts) {
+            allPostsListShow(allPosts);
+      });
+}
+// var locatedPostItem=function(){
+//       var address=$(this).val();
+//       alert("address: "+address);
+// }
