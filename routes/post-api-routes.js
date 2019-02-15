@@ -3,12 +3,17 @@ var db = require("../models");
 module.exports = function (app) {
   // Get all posts
   app.get("/api/allPosts", function (req, res) {
-    db.Post.findAll({}).then(function (dbPosts) {
+    db.Post.findAll({
+      order: [
+        ['id', 'DESC'],
+        ['title', 'ASC'],
+      ]
+    }).then(function (dbPosts) {
       res.json(dbPosts);
     });
   });
   app.get("/api/getPost/:id", function (req, res) {
-    var id=req.params.id;
+    var id = req.params.id;
     db.Post.findById(id).then(function (dbpost) {
       res.json(dbpost);
     });
@@ -31,7 +36,11 @@ module.exports = function (app) {
         title: {
           [Op.like]: [`%${req.params.title}%`]
         }
-      }
+      },
+      order: [
+        ['id', 'DESC'],
+        ['title', 'ASC'],
+      ]
     }).then(function (dbPosts) {
       res.json(dbPosts);
     });
@@ -42,7 +51,11 @@ module.exports = function (app) {
     db.Post.findAll({
       where: {
         userName: req.params.username
-      }
+      },
+      order: [
+        ['id', 'DESC'],
+        ['title', 'ASC'],
+      ]
     }).then(function (dbPosts) {
       res.json(dbPosts);
     });
@@ -52,7 +65,11 @@ module.exports = function (app) {
     db.Post.findAll({
       where: {
         postCode: req.params.zipcode
-      }
+      },
+      order: [
+        ['id', 'DESC'],
+        ['title', 'ASC'],
+      ]
     }).then(function (dbPosts) {
       res.json(dbPosts);
     });
