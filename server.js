@@ -5,6 +5,7 @@ var session  = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+var path=require("path");
 
 var db = require("./models");
 
@@ -14,7 +15,8 @@ var PORT = process.env.PORT || 8088;
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 var passport = require('passport');
 var flash    = require('connect-flash');
