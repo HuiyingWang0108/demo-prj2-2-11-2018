@@ -5,5 +5,5 @@ image
 ./public/js/index(d).js
 htmlRoutes(d).js
 siteFlowMap
-uploads
+uploads/*
 ./views/d.html
