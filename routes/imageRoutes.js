@@ -6,6 +6,9 @@ module.exports = function (app) {
   // Set The Storage Engine
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+      fs.ensureFile(file).then(function(){
+        console.log("done");
+      });
       cb(null, "./public/uploads/")
     },
     filename: function (req, file, cb) {
