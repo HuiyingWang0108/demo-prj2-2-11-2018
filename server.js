@@ -15,8 +15,8 @@ var PORT = process.env.PORT || 8088;
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// app.use(express.static("public"));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static("public"));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 var passport = require('passport');
 var flash    = require('connect-flash');
