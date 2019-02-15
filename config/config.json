@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": "Why19890108",
+    "username": "nrhhkf36qvwr2hyb",
+    "password": "o507akvmiuhznw09",
     "database": "my_db",
-    "host": "localhost",
-    "dialect": "mysql"
+    "host": "pwcspfbyl73eccbn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "dialect": "dyq5q0i4egim1xje"
     // "username": "root",
     // "password": "Why19890108",
     // "database": "my_db",
