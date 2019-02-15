@@ -7,7 +7,12 @@ module.exports = function (app) {
       res.json(dbPosts);
     });
   });
-
+  app.get("/api/getPost/:id", function (req, res) {
+    var id=req.params.id;
+    db.Post.findById(id).then(function (dbpost) {
+      res.json(dbpost);
+    });
+  });
   // Create a new post
   app.post("/api/createpostInfo", function (req, res) {
     console.log("req.body:?? ", req.body);
@@ -58,8 +63,8 @@ module.exports = function (app) {
       res.json(dbPost);
     });
   });
-  app.get("/api/createMap",function(err,res){
-    if(err) throw err;
-    alert("/api/createMap: "+JSON.stringify(res.body));
+  app.get("/api/createMap", function (err, res) {
+    if (err) throw err;
+    alert("/api/createMap: " + JSON.stringify(res.body));
   });
 };

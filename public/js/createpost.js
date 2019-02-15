@@ -2,6 +2,7 @@
 var post = {};
 var postInfoObj = {};
 var mapMarkers = [];
+var mapPostIemMarkers=[]
 // var mapMarkersIncludingLoc = [];
 var startMapMarkers = [];
 var map;
@@ -56,6 +57,12 @@ var API = {
             return $.ajax({
                   url: "/api/createpostInfo/" + id,
                   type: "DELETE"
+            });
+      },
+      getPostById: function (id) {
+            return $.ajax({
+                  url: "/api/getPost/" + id,
+                  type: "get"
             });
       },
       saveMap: function (addressArray) {
@@ -273,13 +280,15 @@ $(document).on("click", ".postInfoBtn", handlePostInfoFormSubmit);
 $(document).on("click", ".searchBtn", handleSearch);
 $(document).on("click", "#submitBtn", handleSubmit);
 $(document).on("click", "#deletePostItem", handleDeletePostItem);
+// $(document).on("click", "#deletePostItem", handleDeletePostItem);
 // $(document).on("change", "#inputGroupSelect01",handleChangeSelect );
+
 // var handleChangeSelect=function(){
 //       //refresh index page
 //       location.reload();
 // allPostsShow();
 // }
-// $(document).on("click", ".allPostBtn", locatedPostItem);//all list for each post click 
+$(document).on("click", ".allPostBtn", locatedPostItem);//all list for each post click 
 /**
  * * init Google map
 */
@@ -381,7 +390,7 @@ function searchMap(postInfoArray, geocoder) {
                         id: eachPostObj.id,
                         lanlg: results[0].geometry.location,
                         price: eachPostObj.price,
-                        condition: eachPostObj.price,
+                        condition: eachPostObj.condition,
                         image: eachPostObj.image,
                         title: eachPostObj.title,
                         address: address,
@@ -430,6 +439,7 @@ function addMarker(postInfoObj, resultsMap) {
       });
 
       mapMarkers.push(marker);
+      // mapPostIemMarkers.push(marker);
       // mapMarkersIncludingLoc.push(marker);
 
 }
@@ -630,9 +640,9 @@ var postItemsByZipcodeShow = function (postItemsdb) {
             postItemStr += `<li>${postItem.contactMedium}</li>`;
             postItemStr += `<li>${postItem.languageOfPost}</li>`;
             postItemStr += "</ul>"
-            var btnId = postItem.id;
-            var bodyId = "body" + postItem.id;
-            var dataTarget = "#body" + postItem.id;
+            // var btnId = postItem.id;
+            var bodyId = "bodyZipcode" + postItem.id;
+            var dataTarget = "#bodyZipcode" + postItem.id;
             var content = '<div class="card"><div class="card-header"><button  class="btn btn-link" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
                   + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
@@ -669,11 +679,11 @@ var allPostsListShow = function (postItemsdb) {
             postItemStr += `<li>${postItem.contactMedium}</li>`;
             postItemStr += `<li>${postItem.languageOfPost}</li>`;
             postItemStr += "</ul>"
-            var addressForBtn = postItem.street + ' ' + postItem.city + ' ' + postItem.state + ' ' + postItem.postCode;
+            // var addressForBtn = postItem.street + ' ' + postItem.city + ' ' + postItem.state + ' ' + postItem.postCode;
             var btnId = postItem.id;
-            var bodyId = "body" + postItem.id;
-            var dataTarget = "#body" + postItem.id;
-            var content = '<div class="card"><div class="card-header"><button value=' + addressForBtn + ' class="btn btn-link allPostBtn" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
+            var bodyId = "bodyAll" + postItem.id;
+            var dataTarget = "#bodyAll" + postItem.id;
+            var content = '<div class="card"><div class="card-header"><button value=' + btnId + ' class="btn btn-link allPostBtn" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
                   + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
                   + 'id="' + bodyId + '"'
@@ -691,7 +701,51 @@ function allPostsShow() {
             allPostsListShow(allPosts);
       });
 }
-// var locatedPostItem=function(){
-//       var address=$(this).val();
-//       alert("address: "+address);
-// }
+function locatedPostItem() {
+      // alert("ok");
+      if ($(this).val()) {
+            var id = parseInt($(this).val());
+            // alert("id: " + parseInt($(this).val()));
+            API.getPostById(id).then(function (dbpost) {
+                  // alert(JSON.stringify(dbpost));
+
+                  var address =dbpost.street+' '+dbpost.city+' '+dbpost.state+' '+dbpost.postCode ;
+                  var geocoder = new google.maps.Geocoder();
+                  // alert("address: " + address);
+                  geocoder.geocode({ 'address': address }, function (results, status) {
+                        // alert("results: " + JSON.stringify(results[0].geometry.location) + " status: " + status);
+                        postInfoObj = {
+                              id: dbpost.id,
+                              lanlg: results[0].geometry.location,
+                              price: dbpost.price,
+                              condition: dbpost.condition,
+                              image: dbpost.image,
+                              title: dbpost.title,
+                              address: address,
+                              phoneNum: dbpost.phoneNum
+                        };
+                        if (status === 'OK') {
+                              // alert(JSON.stringify(postInfoObj));
+                              mapMarkers.forEach(function (lastmarkers) {
+                                    lastmarkers.setMap(null);
+                              });
+                              addMarker(postInfoObj, map);
+                             
+                              // resultsMap.setCenter(results[0].geometry.location);
+                              // var marker = new google.maps.Marker({
+                              //       map: resultsMap,
+                              //       position: results[0].geometry.location,
+                              //       draggable: true,
+                              //       title: "Confirm your location!"
+                              // });
+                        } else {
+                              alert('Geocode was not successful for the following reason: ' + status);
+                        }
+                  });
+            });
+
+      } else {
+            return;
+      }
+
+}
