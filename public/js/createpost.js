@@ -571,7 +571,7 @@ function choiceForUser() {
 // window.onload = choiceForUser;
 // window.onload = postItems;
 window.onload = function () {
-      if (window.location.href.match("createpostInfo") != null) {
+      if (window.location.href.match("createpost") != null||window.location.href.match("createpostType") != null||window.location.href.match("createpostInfo") != null) {
             // alert("createpostInfo");
             choiceForUser();//createpostInfo page
       } else if (window.location.href.match("postItem") != null) {
