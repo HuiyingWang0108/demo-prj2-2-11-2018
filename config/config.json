@@ -5,11 +5,6 @@
     "database": "my_db",
     "host": "pwcspfbyl73eccbn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "dyq5q0i4egim1xje"
-    // "username": "root",
-    // "password": "Why19890108",
-    // "database": "my_db",
-    // "host": "localhost",
-    // "dialect": "mysql"
   },
   "test": {
     "username": "root",
