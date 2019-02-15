@@ -604,25 +604,27 @@ function postItems() {
 var postItemsShow = function (postItemsdb) {
       postItemsdb.forEach(function (postItem) {
             //--------------------------
-            var postItemStr = "<ul>"
-            // alert(JSON.stringify(postItem));
-            // var postItemLi=$("<li>");
-            postItemStr += `<li>${postItem.title}</li>`;
-            postItemStr += `<li>${postItem.price}</li>`;
-            postItemStr += `<li>${postItem.condition}</li>`;
-            postItemStr += `<li>${postItem.typeOfPost}</li>`;
-            postItemStr += `<li>${postItem.category}</li>`;
-            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
-            postItemStr += `<li>${postItem.street}</li>`;
-            postItemStr += `<li>${postItem.city}</li>`;
-            postItemStr += `<li>${postItem.state}</li>`;
-            postItemStr += `<li>${postItem.postCode}</li>`;
-            postItemStr += `<li>${postItem.contactName}</li>`;
-            postItemStr += `<li>${postItem.phoneNum}</li>`;
-            postItemStr += `<li>${postItem.email}</li>`;
-            postItemStr += `<li>${postItem.contactMedium}</li>`;
-            postItemStr += `<li>${postItem.languageOfPost}</li>`;
-            postItemStr += "</ul>"
+            testStr='<div class="row"><div class="col-6"><ul>'
+            testStr += `<li id="typeOfPostLi"><strong>${postItem.typeOfPost}</strong></li>`;
+            testStr += `<li><strong>${postItem.title}</strong></li>`;
+            testStr += `<li>$ <strong>${postItem.price}</strong></li>`;
+            testStr += `<li>${postItem.condition}</li>`;
+            // testStr += `<li>${postItem.category}</li>`;
+            testStr += '<li id="typeLi">Adress:</li>';
+            testStr += `<li>${postItem.street}</li>`;
+            testStr += `<li>${postItem.city}</li>`;
+            testStr += `<li>${postItem.state}</li>`;
+            testStr += `<li>${postItem.postCode}</li>`;
+            testStr += '<li id="typeLi">Contact Info:</li>';
+            // alert(postItem.contactName=="");
+            testStr += `<li>${(postItem.contactName == "") ? "<font color='grey'>name: ?</font>" : postItem.contactName}</li>`;
+            testStr += `<li>${(postItem.phoneNum == "") ? "<font color='grey'>Phone: ?</font>" : postItem.phoneNum}</li>`;
+            testStr += `<li>${(postItem.email == "") ? "<font color='grey'>Email: ?</font>" : postItem.email}</li>`;
+            testStr += `<li>${(postItem.contactMedium == "") ? "<font color='grey'>Contact Medium: ?</font>" : postItem.contactMedium}</li>`;
+            testStr += `<li>${(postItem.languageOfPost == ""||postItem.languageOfPost ==null) ? "<font color='grey'>Laguage: ?</font>" : postItem.languageOfPost}</li>`;
+            testStr+='</ul></div><div class="col-6">'
+            testStr+=`<img class="postItemImg" src=${postItem.image}>`;
+            testStr+='</div></div>'
             var btnId = postItem.id;
             var bodyId = "body" + postItem.id;
             var dataTarget = "#body" + postItem.id;
@@ -631,7 +633,7 @@ var postItemsShow = function (postItemsdb) {
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + '<button id="deletePostItem" value=' + btnId + ' type="button" class="btn btn-danger">delete</button>' + ' </button></div> <div '
                   + 'id="' + bodyId + '"'
                   + ' class="collapse"> <div class="card-body">'
-                  + postItemStr
+                  + testStr
                   + '</div></div></div>';
             // alert(content);
             $("#postItemsContainer").append(content);
@@ -644,25 +646,27 @@ var postItemsByZipcodeShow = function (postItemsdb) {
       $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------
-            var postItemStr = "<ul>"
-            // alert(JSON.stringify(postItem));
-            // var postItemLi=$("<li>");
-            postItemStr += `<li>${postItem.title}</li>`;
-            postItemStr += `<li>${postItem.price}</li>`;
-            postItemStr += `<li>${postItem.condition}</li>`;
-            postItemStr += `<li>${postItem.typeOfPost}</li>`;
-            postItemStr += `<li>${postItem.category}</li>`;
-            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
-            postItemStr += `<li>${postItem.street}</li>`;
-            postItemStr += `<li>${postItem.city}</li>`;
-            postItemStr += `<li>${postItem.state}</li>`;
-            postItemStr += `<li>${postItem.postCode}</li>`;
-            postItemStr += `<li>${postItem.contactName}</li>`;
-            postItemStr += `<li>${postItem.phoneNum}</li>`;
-            postItemStr += `<li>${postItem.email}</li>`;
-            postItemStr += `<li>${postItem.contactMedium}</li>`;
-            postItemStr += `<li>${postItem.languageOfPost}</li>`;
-            postItemStr += "</ul>"
+            testStr='<div class="row"><div class="col-6"><ul>'
+            testStr += `<li id="typeOfPostLi"><strong>${postItem.typeOfPost}</strong></li>`;
+            testStr += `<li><strong>${postItem.title}</strong></li>`;
+            testStr += `<li>$ <strong>${postItem.price}</strong></li>`;
+            testStr += `<li>${postItem.condition}</li>`;
+            // testStr += `<li>${postItem.category}</li>`;
+            testStr += '<li id="typeLi">Adress:</li>';
+            testStr += `<li>${postItem.street}</li>`;
+            testStr += `<li>${postItem.city}</li>`;
+            testStr += `<li>${postItem.state}</li>`;
+            testStr += `<li>${postItem.postCode}</li>`;
+            testStr += '<li id="typeLi">Contact Info:</li>';
+            // alert(postItem.contactName=="");
+            testStr += `<li>${(postItem.contactName == "") ? "<font color='grey'>name: ?</font>" : postItem.contactName}</li>`;
+            testStr += `<li>${(postItem.phoneNum == "") ? "<font color='grey'>Phone: ?</font>" : postItem.phoneNum}</li>`;
+            testStr += `<li>${(postItem.email == "") ? "<font color='grey'>Email: ?</font>" : postItem.email}</li>`;
+            testStr += `<li>${(postItem.contactMedium == "") ? "<font color='grey'>Contact Medium: ?</font>" : postItem.contactMedium}</li>`;
+            testStr += `<li>${(postItem.languageOfPost == ""||postItem.languageOfPost ==null) ? "<font color='grey'>Laguage: ?</font>" : postItem.languageOfPost}</li>`;
+            testStr+='</ul></div><div class="col-6">'
+            testStr+=`<img class="postItemImg" src=${postItem.image}>`;
+            testStr+='</div></div>'
             var btnId = postItem.id;
             var bodyId = "bodyZipcode" + postItem.id;
             var dataTarget = "#bodyZipcode" + postItem.id;
@@ -671,7 +675,7 @@ var postItemsByZipcodeShow = function (postItemsdb) {
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
                   + 'id="' + bodyId + '"'
                   + ' class="collapse"> <div class="card-body">'
-                  + postItemStr
+                  + testStr
                   + '</div></div></div>';
             // alert(content);
            
@@ -686,6 +690,28 @@ var allPostsListShow = function (postItemsdb) {
       $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------
+            testStr='<div class="row"><div class="col-6"><ul>'
+            testStr += `<li id="typeOfPostLi"><strong>${postItem.typeOfPost}</strong></li>`;
+            testStr += `<li><strong>${postItem.title}</strong></li>`;
+            testStr += `<li>$ <strong>${postItem.price}</strong></li>`;
+            testStr += `<li>${postItem.condition}</li>`;
+            // testStr += `<li>${postItem.category}</li>`;
+            testStr += '<li id="typeLi">Adress:</li>';
+            testStr += `<li>${postItem.street}</li>`;
+            testStr += `<li>${postItem.city}</li>`;
+            testStr += `<li>${postItem.state}</li>`;
+            testStr += `<li>${postItem.postCode}</li>`;
+            testStr += '<li id="typeLi">Contact Info:</li>';
+            // alert(postItem.contactName=="");
+            testStr += `<li>${(postItem.contactName == "") ? "<font color='grey'>name: ?</font>" : postItem.contactName}</li>`;
+            testStr += `<li>${(postItem.phoneNum == "") ? "<font color='grey'>Phone: ?</font>" : postItem.phoneNum}</li>`;
+            testStr += `<li>${(postItem.email == "") ? "<font color='grey'>Email: ?</font>" : postItem.email}</li>`;
+            testStr += `<li>${(postItem.contactMedium == "") ? "<font color='grey'>Contact Medium: ?</font>" : postItem.contactMedium}</li>`;
+            testStr += `<li>${(postItem.languageOfPost == ""||postItem.languageOfPost ==null) ? "<font color='grey'>Laguage: ?</font>" : postItem.languageOfPost}</li>`;
+            testStr+='</ul></div><div class="col-6">'
+            testStr+=`<img class="postItemImg" src=${postItem.image}>`;
+            testStr+='</div></div>'
+            //----------------
             var postItemStr = "<ul>"
             // alert(JSON.stringify(postItem));
             // var postItemLi=$("<li>");
@@ -714,7 +740,7 @@ var allPostsListShow = function (postItemsdb) {
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
                   + 'id="' + bodyId + '"'
                   + ' class="collapse"> <div class="card-body">'
-                  + postItemStr
+                  + testStr
                   + '</div></div></div>';
             // alert(content);
             $("#allPosts").append(content);
@@ -728,25 +754,27 @@ var postsByUsedItemShow = function (postItemsdb) {
       $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------
-            var postItemStr = "<ul>"
-            // alert(JSON.stringify(postItem));
-            // var postItemLi=$("<li>");
-            postItemStr += `<li>${postItem.title}</li>`;
-            postItemStr += `<li>${postItem.price}</li>`;
-            postItemStr += `<li>${postItem.condition}</li>`;
-            postItemStr += `<li>${postItem.typeOfPost}</li>`;
-            postItemStr += `<li>${postItem.category}</li>`;
-            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
-            postItemStr += `<li>${postItem.street}</li>`;
-            postItemStr += `<li>${postItem.city}</li>`;
-            postItemStr += `<li>${postItem.state}</li>`;
-            postItemStr += `<li>${postItem.postCode}</li>`;
-            postItemStr += `<li>${postItem.contactName}</li>`;
-            postItemStr += `<li>${postItem.phoneNum}</li>`;
-            postItemStr += `<li>${postItem.email}</li>`;
-            postItemStr += `<li>${postItem.contactMedium}</li>`;
-            postItemStr += `<li>${postItem.languageOfPost}</li>`;
-            postItemStr += "</ul>"
+            testStr='<div class="row"><div class="col-6"><ul>'
+            testStr += `<li id="typeOfPostLi"><strong>${postItem.typeOfPost}</strong></li>`;
+            testStr += `<li><strong>${postItem.title}</strong></li>`;
+            testStr += `<li>$ <strong>${postItem.price}</strong></li>`;
+            testStr += `<li>${postItem.condition}</li>`;
+            // testStr += `<li>${postItem.category}</li>`;
+            testStr += '<li id="typeLi">Adress:</li>';
+            testStr += `<li>${postItem.street}</li>`;
+            testStr += `<li>${postItem.city}</li>`;
+            testStr += `<li>${postItem.state}</li>`;
+            testStr += `<li>${postItem.postCode}</li>`;
+            testStr += '<li id="typeLi">Contact Info:</li>';
+            // alert(postItem.contactName=="");
+            testStr += `<li>${(postItem.contactName == "") ? "<font color='grey'>name: ?</font>" : postItem.contactName}</li>`;
+            testStr += `<li>${(postItem.phoneNum == "") ? "<font color='grey'>Phone: ?</font>" : postItem.phoneNum}</li>`;
+            testStr += `<li>${(postItem.email == "") ? "<font color='grey'>Email: ?</font>" : postItem.email}</li>`;
+            testStr += `<li>${(postItem.contactMedium == "") ? "<font color='grey'>Contact Medium: ?</font>" : postItem.contactMedium}</li>`;
+            testStr += `<li>${(postItem.languageOfPost == ""||postItem.languageOfPost ==null) ? "<font color='grey'>Laguage: ?</font>" : postItem.languageOfPost}</li>`;
+            testStr+='</ul></div><div class="col-6">'
+            testStr+=`<img class="postItemImg" src=${postItem.image}>`;
+            testStr+='</div></div>'
             // var addressForBtn = postItem.street + ' ' + postItem.city + ' ' + postItem.state + ' ' + postItem.postCode;
             var btnId = postItem.id;
             var bodyId = "bodyUsedItem" + postItem.id;
@@ -756,7 +784,7 @@ var postsByUsedItemShow = function (postItemsdb) {
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
                   + 'id="' + bodyId + '"'
                   + ' class="collapse"> <div class="card-body">'
-                  + postItemStr
+                  + testStr
                   + '</div></div></div>';
             // alert(content);
             $("#allPosts").append(content);
@@ -770,7 +798,7 @@ function allPostsShow() {
       });
 }
 function locatedPostItem() {
-      // alert("ok");
+      // alert("ok"+$(this).val());
       if ($(this).val()) {
             var id = parseInt($(this).val());
             // alert("id: " + parseInt($(this).val()));

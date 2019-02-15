@@ -63,3 +63,7 @@
   color: red;
   font: 20px;
 }
+#typeOfPostLi, #typeLi{
+  color:rgb(87, 87, 145);
+  font-size: 22px;
+}
