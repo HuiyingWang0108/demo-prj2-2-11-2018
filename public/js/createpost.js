@@ -229,6 +229,8 @@ var handleSearch = function (event) {
                         alert("No related Baby Used Item");
                         return;
                   }
+                  //index page updated
+                  postsByUsedItemShow(dbPosts);
                   // $("#allPostsCol").hide();??
                   mapMarkers.forEach(function (lastmarkers) {
                         lastmarkers.setMap(null);
@@ -243,7 +245,7 @@ var handleSearch = function (event) {
 
             });
       } else if (searchVal === 'zipcode') {
-            $("#allpostContainer").hide()
+            // $("#allpostContainer").hide()
             // $("#map").hide();
             API.getPostsByZipcode(searchInput).then(function (dbPosts) {
                   if (!dbPosts) {
@@ -281,7 +283,7 @@ $(document).on("click", ".searchBtn", handleSearch);
 $(document).on("click", "#submitBtn", handleSubmit);
 $(document).on("click", "#deletePostItem", handleDeletePostItem);
 // $(document).on("click", "#deletePostItem", handleDeletePostItem);
-// $(document).on("change", "#inputGroupSelect01",handleChangeSelect );
+$(document).on("change", "#inputGroupSelect01",allPostsShow );
 
 // var handleChangeSelect=function(){
 //       //refresh index page
@@ -619,6 +621,7 @@ var postItemsShow = function (postItemsdb) {
       // $("#postItemContainer").append(postItemStr);
 }
 var postItemsByZipcodeShow = function (postItemsdb) {
+      $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------
             var postItemStr = "<ul>"
@@ -640,10 +643,10 @@ var postItemsByZipcodeShow = function (postItemsdb) {
             postItemStr += `<li>${postItem.contactMedium}</li>`;
             postItemStr += `<li>${postItem.languageOfPost}</li>`;
             postItemStr += "</ul>"
-            // var btnId = postItem.id;
+            var btnId = postItem.id;
             var bodyId = "bodyZipcode" + postItem.id;
             var dataTarget = "#bodyZipcode" + postItem.id;
-            var content = '<div class="card"><div class="card-header"><button  class="btn btn-link" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
+            var content = '<div class="card"><div class="card-header"><button value='+btnId+'  class="btn btn-link allPostBtn" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
                   + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
                   + 'id="' + bodyId + '"'
@@ -651,13 +654,16 @@ var postItemsByZipcodeShow = function (postItemsdb) {
                   + postItemStr
                   + '</div></div></div>';
             // alert(content);
-            $("#searchByZipcode").append(content);
+           
+            $("#allPosts").append(content);
+            // $("#searchByZipcode").append(content);
       });
       // postItemStr += "</ol>"
       // $("#postItemContainer").append(postItemStr);
 }
 var allPostsListShow = function (postItemsdb) {
       // alert("allPostsListShow");
+      $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------
             var postItemStr = "<ul>"
@@ -683,6 +689,47 @@ var allPostsListShow = function (postItemsdb) {
             var btnId = postItem.id;
             var bodyId = "bodyAll" + postItem.id;
             var dataTarget = "#bodyAll" + postItem.id;
+            var content = '<div class="card"><div class="card-header"><button value=' + btnId + ' class="btn btn-link allPostBtn" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
+                  + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
+                  + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
+                  + 'id="' + bodyId + '"'
+                  + ' class="collapse"> <div class="card-body">'
+                  + postItemStr
+                  + '</div></div></div>';
+            // alert(content);
+            $("#allPosts").append(content);
+      });
+      // postItemStr += "</ol>"
+      // $("#postItemContainer").append(postItemStr);
+}
+var postsByUsedItemShow = function (postItemsdb) {
+      // alert("allPostsListShow");
+      $("#allPosts").html("");
+      postItemsdb.forEach(function (postItem) {
+            //--------------------------
+            var postItemStr = "<ul>"
+            // alert(JSON.stringify(postItem));
+            // var postItemLi=$("<li>");
+            postItemStr += `<li>${postItem.title}</li>`;
+            postItemStr += `<li>${postItem.price}</li>`;
+            postItemStr += `<li>${postItem.condition}</li>`;
+            postItemStr += `<li>${postItem.typeOfPost}</li>`;
+            postItemStr += `<li>${postItem.category}</li>`;
+            postItemStr += `<img class="postItemImg" src=${postItem.image}>`;
+            postItemStr += `<li>${postItem.street}</li>`;
+            postItemStr += `<li>${postItem.city}</li>`;
+            postItemStr += `<li>${postItem.state}</li>`;
+            postItemStr += `<li>${postItem.postCode}</li>`;
+            postItemStr += `<li>${postItem.contactName}</li>`;
+            postItemStr += `<li>${postItem.phoneNum}</li>`;
+            postItemStr += `<li>${postItem.email}</li>`;
+            postItemStr += `<li>${postItem.contactMedium}</li>`;
+            postItemStr += `<li>${postItem.languageOfPost}</li>`;
+            postItemStr += "</ul>"
+            // var addressForBtn = postItem.street + ' ' + postItem.city + ' ' + postItem.state + ' ' + postItem.postCode;
+            var btnId = postItem.id;
+            var bodyId = "bodyUsedItem" + postItem.id;
+            var dataTarget = "#bodyUsedItem" + postItem.id;
             var content = '<div class="card"><div class="card-header"><button value=' + btnId + ' class="btn btn-link allPostBtn" type="button" data-toggle="collapse" data-target="' + dataTarget + '"'
                   + ' aria-expanded="fase" aria-controls="' + bodyId + '"'
                   + '> <strong>title:</strong> ' + postItem.title + ' <strong>price:</strong> ' + postItem.price + ' <strong>condition:</strong> ' + postItem.condition + ' </button></div> <div '
