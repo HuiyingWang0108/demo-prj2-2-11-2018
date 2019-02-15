@@ -216,6 +216,7 @@ var handlePostInfoFormSubmit = function (event) {
 };
 var handleSearch = function (event) {
       event.preventDefault();
+      $("#alertRow").html("");//clear the alert info
       var postInfoArray = [];
       // alert("ok");
       var searchVal = $("option[name='searchNam']:selected").val();
@@ -224,11 +225,21 @@ var handleSearch = function (event) {
       if (searchVal === 'title') {
 
             API.getPostsByUseditem(searchInput).then(function (dbPosts) {
-                  // alert("getPostsByUseditem" + JSON.stringify(dbPosts));
-                  if (!dbPosts) {
-                        alert("No related Baby Used Item");
+                  
+                  // alert("getPostsByUseditem" + JSON.stringify(dbPosts).length);//2
+                  if(JSON.stringify(dbPosts).length==2){
+                        // alert("No related Baby Used Item: "+searchInput);
+                        var alertInfo=`No related Baby Used Item: ${searchInput}`;
+                        $("#alertRow").html(alertInfo);
+                        $("#allPosts").html("");
                         return;
                   }
+                  if (!dbPosts) {//false
+                        // alert("No related Baby Used Item");
+                        // $("#allPosts").append(`<p id='alertId'>No related Baby Used Item: ${searchInput}</p>`);
+                        return;
+                  }
+                 
                   //index page updated
                   postsByUsedItemShow(dbPosts);
                   // $("#allPostsCol").hide();??
@@ -248,8 +259,16 @@ var handleSearch = function (event) {
             // $("#allpostContainer").hide()
             // $("#map").hide();
             API.getPostsByZipcode(searchInput).then(function (dbPosts) {
+                  if(JSON.stringify(dbPosts).length==2){
+                        // alert("No related Baby Used Item: "+searchInput);
+                        var alertInfo=`No related Zipcode: ${searchInput}`;
+                        $("#alertRow").html(alertInfo);
+                        $("#allPosts").html("");
+                        return;
+                  }
                   if (!dbPosts) {
-                        alert("No related goods in this zipcode: " + searchInput);
+                        // alert("No related goods in this zipcode: " + searchInput);
+                        $("#allPosts").append(`<p id='alertId'>No related Zipcode: ${searchInput}</p>`);
                         return;
                   }
                   postItemsByZipcodeShow(dbPosts);
@@ -621,6 +640,7 @@ var postItemsShow = function (postItemsdb) {
       // $("#postItemContainer").append(postItemStr);
 }
 var postItemsByZipcodeShow = function (postItemsdb) {
+      // $("#alertRow").hide();
       $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------
@@ -704,6 +724,7 @@ var allPostsListShow = function (postItemsdb) {
 }
 var postsByUsedItemShow = function (postItemsdb) {
       // alert("allPostsListShow");
+      // $("#alertRow").hide();
       $("#allPosts").html("");
       postItemsdb.forEach(function (postItem) {
             //--------------------------

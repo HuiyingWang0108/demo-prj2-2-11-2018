@@ -1,7 +1,8 @@
 #map {
-  height: 280px;
+  margin-left: -15px;
+  height: 380px;
   position: absolute;
-  width: 80%;
+  width: 100%;
   border: 1px solid green;
 }
 #dirMap{
@@ -57,4 +58,8 @@
 }
 .postItemImg{
   width: 180px;
+}
+#alertRow{
+  color: red;
+  font: 20px;
 }
