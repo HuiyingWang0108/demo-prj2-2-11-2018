@@ -1,9 +1,8 @@
 node_modules
 image
-./public/uploads
+./public/uploads/*
 ./public/js/d.js
 ./public/js/index(d).js
 htmlRoutes(d).js
 siteFlowMap
-
 ./views/d.html
