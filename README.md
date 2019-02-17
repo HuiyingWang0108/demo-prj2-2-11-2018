@@ -15,12 +15,12 @@
 ### in the project folder run: node server.js
 ## Website Map:
 
-![alt text](https://github.com/HuiyingWang0108/prj2Demo/blob/master/siteFlowMap/dataFlow.png)
+![alt text](https://github.com/HuiyingWang0108/prj2Demo/blob/master/siteFlowMap/siteMap.png)
 
 ## DB UML Diagram: 
 ### Aggregation implies a relationship where the child(posts table) can exist independently of the parent(users). Bellow is the UML diagram.
 
-![alt text](https://github.com/HuiyingWang0108/prj2Demo/blob/master/siteFlowMap/siteMap.png)
+![alt text](https://github.com/HuiyingWang0108/prj2Demo/blob/master/siteFlowMap/db.png)
 
 ## Data Flow:
 
