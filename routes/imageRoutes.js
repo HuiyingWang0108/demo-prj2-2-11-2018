@@ -5,15 +5,15 @@ const multerS3 = require('multer-s3');
 const path = require('path');
 module.exports = function (app) {
   const s3Config = new AWS.S3({
-    accessKeyId: "AKIAI5QFY54H64UTDLXQ",//process.env.AWS_IAM_USER_KEY
-    secretAccessKey: "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",//process.env.AWS_IAM_USER_SECRET
-    bucket: "wymissu",
+    accessKeyId: process.env.AWS_IAM_USER_KEY,//
+    secretAccessKey: process.env.AWS_IAM_USER_SECRET,//
+    bucket: AWS_YOUR_BUCKET,
     region: "us-west-2"
   });
   // Set The Storage Engine
   const multerS3Config = multerS3({
     s3: s3Config,
-    bucket: "wymissu",//process.env.AWS_BUCKET_NAME
+    bucket: process.env.AWS_BUCKET_NAME,//process.env.AWS_BUCKET_NAME
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
