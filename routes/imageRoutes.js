@@ -1,22 +1,42 @@
 
 const multer = require('multer');
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
 const path = require('path');
 module.exports = function (app) {
-
+  const s3Config = new AWS.S3({
+    accessKeyId: "AKIAI5QFY54H64UTDLXQ",//process.env.AWS_IAM_USER_KEY
+    secretAccessKey: "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",//process.env.AWS_IAM_USER_SECRET
+    bucket: "wymissu",
+    region: "us-west-2"
+  });
   // Set The Storage Engine
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "./public/uploads/")
+  const multerS3Config = multerS3({
+    s3: s3Config,
+    bucket: "wymissu",//process.env.AWS_BUCKET_NAME
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    key: function (req, file, cb) {
+      console.log(file)
+      cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname))//new Date().toISOString() + '-' + file.originalname
     }
   });
+  // // Set The Storage Engine
+  // const storage = multer.diskStorage({
+  //   destination: function (req, file, cb) {
+  //     cb(null, "./public/uploads/")
+  //   },
+  //   filename: function (req, file, cb) {
+  //     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  //   }
+  // });
 
   // Init Upload
   const upload = multer({
-    storage: storage,
-    limits: { fileSize: 1000000 },
+    // storage: storage,
+    storage: multerS3Config,
+    limits: { fileSize: 1024 * 1024 * 1 },//we are allowing only 1 MB image
     fileFilter: function (req, file, cb) {
       checkFileType(file, cb);
     }
@@ -53,12 +73,6 @@ module.exports = function (app) {
         });
       }
       else {
-        // res.render('upload', {
-        //   condition: {
-        //     "isNotUpload": typeof req.file === "undefined"
-        //   },
-        //   srcPath: req.file.path // get the user out of session and pass to template
-        // });
         if (req.file == undefined) {
           console.log("no image file upload");
           // res.send(JSON.stringify(req));
@@ -67,11 +81,13 @@ module.exports = function (app) {
           });
         } else {
           console.log(req.file);
+          console.log("path: "+req.file.location);
           // res.json(req.file);
           // res.send(`/uploads/${req.file.filename}`);
           res.render("upload", {
             msg: 'File Uploaded!',
-            filePath: `/uploads/${req.file.filename}`
+            // filePath: `/uploads/${req.file.filename}`
+            filePath: req.file.location
           });
         }
       }
