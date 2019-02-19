@@ -7,11 +7,12 @@
 ### 5 Users can search for baby used item near them by zip code.
 ## Technology:
 ### 1 Develop Environment: VSCode
-### 2 Develop technology: Express, NodeJS, Handlebars, Sequelize, Mysql
+### 2 Develop technology: Express, NodeJS, Handlebars, Sequelize, Mysql, AWS S3
 ### 3 passport and multer
 ## How to use:
 ### pull this from github:git clone https://github.com/HuiyingWang0108/demo-prj2-2-11-2018
 ### change config/config.json file using your database 
+### According to https://medium.com/@imranhsayed/file-or-image-uploads-on-amazon-web-services-aws-using-react-node-and-express-js-aws-sdk-252742286162 and add your own aws key and secret in imageRoutes.js
 ### in the project folder run: node server.js
 ## Website Map:
 
