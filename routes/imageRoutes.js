@@ -8,7 +8,7 @@ module.exports = function (app) {
     accessKeyId: process.env.AWS_IAM_USER_KEY,//
     secretAccessKey: process.env.AWS_IAM_USER_SECRET,//
     bucket: AWS_YOUR_BUCKET,
-    region: "us-west-2"
+    region: process.env.REGION_NAME//"us-west-2"
   });
   // Set The Storage Engine
   const multerS3Config = multerS3({
