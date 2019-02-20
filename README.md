@@ -9,6 +9,8 @@
 ### 1 Develop Environment: VSCode
 ### 2 Develop technology: Express, NodeJS, Handlebars, Sequelize, Mysql, AWS S3
 ### 3 passport and multer
+## deployed in heroku link:
+### https://vast-dusk-42594.herokuapp.com/index
 ## How to use:
 ### pull this from github:git clone https://github.com/HuiyingWang0108/demo-prj2-2-11-2018
 ### change config/config.json file using your database 
