@@ -12,6 +12,7 @@
 ## How to use:
 ### pull this from github:git clone https://github.com/HuiyingWang0108/demo-prj2-2-11-2018
 ### change config/config.json file using your database 
+### change index.handlebars and directionMap.handlebars and use your own google map api
 ### According to https://medium.com/@imranhsayed/file-or-image-uploads-on-amazon-web-services-aws-using-react-node-and-express-js-aws-sdk-252742286162 and add your own aws key and secret in imageRoutes.js
 ### in the project folder run: node server.js
 ## Website Map:
