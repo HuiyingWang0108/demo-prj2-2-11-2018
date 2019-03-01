@@ -1,30 +1,30 @@
 # About this Project
 ## Scope:
 ### User Management:
-#### Users can login by third party, wechat
-#### Users can signup/login by email
-#### Users can edit personal info, like contact info, address, etc
++ Users can login by third party, wechat
++ Users can signup/login by email
++ Users can edit personal info, like contact info, address, etc
 
 ### Product Management:
-#### Product can be edited info, like price, photo, usage status, original price, purchased year, etc
-#### Product can be deleted
-#### Product can be added/created
-#### Product can be edited status, like pending/hold, wanted, etc
++ Product can be edited info, like price, photo, usage status, original price, purchased year, etc
++ Product can be deleted
++ Product can be added/created
++ Product can be edited status, like pending/hold, wanted, etc
 
 ### Post Management:
-#### Post can be deleted
-#### Post can be added/created
-#### Post can be edited status, like pending/hold, wanted etc
-#### Post can be edited info, like add more products, remove some products, etc
++ Post can be deleted
++ Post can be added/created
++ Post can be edited status, like pending/hold, wanted etc
++ Post can be edited info, like add more products, remove some products, etc
 
 ### Search Management:
-#### Product can be searched by one zipcode or multiple zipcode
-#### Product can be searched by category
-#### Product can be searched by product keywords, like part of product name
++ Product can be searched by one zipcode or multiple zipcode
++ Product can be searched by category
++ Product can be searched by product keywords, like part of product name
 
 ### Amazon Price Compare Management:
-#### Product's price can be compared with amazon's item
-#### Product's price can show discount info
++ Product's price can be compared with amazon's item
++ Product's price can show discount info
 
 ## Technology:
 ### 1 Develop Environment: VSCode
