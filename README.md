@@ -26,6 +26,10 @@
 + Product's price can be compared with amazon's item
 + Product's price can show discount info
 
+### Notification Management:
++ When a user publishes a post(for sale/wanted), his/her nearby friends(in the same wechat group) can get a notification.
++ When a user publishes a post(for sale), somebody(who wanted some of the products in this post) can get a notification.
+
 ## Technology:
 ### 1 Develop Environment: VSCode
 ### 2 Develop technology: Express, NodeJS, Handlebars, Sequelize, Mysql, AWS S3
